@@ -26,17 +26,28 @@ interface Job {
 const BASE_URL = 'https://www.helloworld.rs/oglasi-za-posao/';
 
 const FIELD_MAP: Record<string, string> = {
-  programming: 'programiranje',
-  programiranje: 'programiranje',
-  management: 'menadzment',
-  managment: 'menadzment',
+  'software-engineering': 'programiranje',
+  'project-management': 'menadzment',
 };
 
 const SENIORITY_MAP: Record<string, string> = {
   junior: '1',
   medior: '2',
+  mid: '2',
   senior: '3',
 };
+
+// Available filters - exported for use in JobsService
+export const AVAILABLE_FIELDS = [
+  { value: 'software-engineering', label: 'Software Engineering' },
+  { value: 'project-management', label: 'Project Management' },
+];
+
+export const AVAILABLE_SENIORITIES = [
+  { value: 'junior', label: 'Junior' },
+  { value: 'medior', label: 'Medior' },
+  { value: 'senior', label: 'Senior' },
+];
 
 const SELECTORS = {
   cookieButton: 'div.cookie-ribbon-container button',
@@ -96,7 +107,7 @@ export class HelloworldService {
   }
 
   private async scrapeFromSite(url: string, cacheKey: string): Promise<Job[]> {
-    await this.automationService.init(false);
+    await this.automationService.init();
     const page = await this.automationService.newPage();
 
     try {

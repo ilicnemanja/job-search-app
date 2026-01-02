@@ -28,6 +28,7 @@ pnpm-debug.log*
 
 # IDE & Editors
 .idea/
+.vscode/
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
@@ -55,6 +56,12 @@ coverage/
 .turbo/
 .eslintcache
 .stylelintcache
+
+# TanStack / Vite
+.vinxi/
+.output/
+.nitro/
+.tanstack/
 
 # Misc
 *.local

@@ -1,6 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { HelloworldService } from '../shared/sites/helloworld/helloworld.service';
-import { JobQueryDto, JobResponseDto } from './dto';
+import {
+  HelloworldService,
+  AVAILABLE_FIELDS,
+  AVAILABLE_SENIORITIES,
+} from '../shared/sites/helloworld/helloworld.service';
+import { JobQueryDto, JobResponseDto, FiltersResponseDto } from './dto';
 
 @Injectable()
 export class JobsService {
@@ -14,5 +18,12 @@ export class JobsService {
     ]);
     // Flatten and return all jobs
     return results.flat();
+  }
+
+  getFilters(): FiltersResponseDto {
+    return {
+      fields: AVAILABLE_FIELDS,
+      seniorities: AVAILABLE_SENIORITIES,
+    };
   }
 }
