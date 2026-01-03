@@ -17,6 +17,7 @@ interface JobSearchProps {
   initialPlatform?: string;
   initialField?: string;
   initialSeniority?: string;
+  initialLocation?: string;
   initialQuery?: string;
   /** If provided, will call this instead of navigating */
   onSearch?: (filters: {
@@ -24,6 +25,7 @@ interface JobSearchProps {
     platform: string;
     field: string;
     seniority: string;
+    location: string;
   }) => void;
 }
 
@@ -31,6 +33,7 @@ export function JobSearch({
   initialPlatform,
   initialField,
   initialSeniority,
+  initialLocation,
   initialQuery,
   onSearch,
 }: JobSearchProps) {
@@ -39,9 +42,11 @@ export function JobSearch({
   const [platform, setPlatform] = useState(initialPlatform || "helloworld");
   const [field, setField] = useState(initialField || "all");
   const [seniority, setSeniority] = useState(initialSeniority || "all");
+  const [location, setLocation] = useState(initialLocation || "all");
   const [platforms, setPlatforms] = useState<FilterOption[]>([]);
   const [fields, setFields] = useState<FilterOption[]>([]);
   const [seniorities, setSeniorities] = useState<FilterOption[]>([]);
+  const [locations, setLocations] = useState<FilterOption[]>([]);
   const [isLoadingFilters, setIsLoadingFilters] = useState(true);
 
   useEffect(() => {
@@ -51,6 +56,7 @@ export function JobSearch({
         setPlatforms(filters.platforms);
         setFields(filters.fields);
         setSeniorities(filters.seniorities);
+        setLocations(filters.locations);
       } catch (error) {
         console.error("Failed to load filters:", error);
       } finally {
@@ -76,18 +82,23 @@ export function JobSearch({
   }, [initialSeniority]);
 
   useEffect(() => {
+    if (initialLocation !== undefined) setLocation(initialLocation || "all");
+  }, [initialLocation]);
+
+  useEffect(() => {
     if (initialQuery !== undefined) setQuery(initialQuery || "");
   }, [initialQuery]);
 
   const handleSearch = () => {
     if (onSearch) {
-      onSearch({ query, platform, field, seniority });
+      onSearch({ query, platform, field, seniority, location });
     } else {
       // Navigate to jobs page with search params
       const searchParams: Record<string, string> = {};
       if (platform) searchParams.platform = platform;
       if (field && field !== "all") searchParams.field = field;
       if (seniority && seniority !== "all") searchParams.seniority = seniority;
+      if (location && location !== "all") searchParams.location = location;
       if (query) searchParams.q = query;
 
       navigate({
@@ -175,6 +186,26 @@ export function JobSearch({
                   {seniorities.map((s) => (
                     <SelectItem key={s.value} value={s.value}>
                       {s.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="flex-1">
+              <Select
+                value={location}
+                onValueChange={setLocation}
+                disabled={isLoadingFilters}
+              >
+                <SelectTrigger className="h-11 bg-background/50 border-border/50">
+                  <SelectValue placeholder="Select location" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Locations</SelectItem>
+                  {locations.map((l) => (
+                    <SelectItem key={l.value} value={l.value}>
+                      {l.label}
                     </SelectItem>
                   ))}
                 </SelectContent>

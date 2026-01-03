@@ -22,6 +22,10 @@ export class JobQueryDto {
   seniority?: string;
 
   @IsOptional()
+  @IsString()
+  location?: string;
+
+  @IsOptional()
   @IsInt()
   @Min(1)
   @Type(() => Number)

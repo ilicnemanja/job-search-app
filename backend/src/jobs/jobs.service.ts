@@ -3,6 +3,7 @@ import {
   HelloworldService,
   AVAILABLE_FIELDS,
   AVAILABLE_SENIORITIES,
+  AVAILABLE_LOCATIONS,
 } from '../shared/sites/helloworld/helloworld.service';
 import { JobQueryDto, JobResponseDto, FiltersResponseDto } from './dto';
 
@@ -39,6 +40,7 @@ export class JobsService {
       platforms: AVAILABLE_PLATFORMS,
       fields: AVAILABLE_FIELDS,
       seniorities: AVAILABLE_SENIORITIES,
+      locations: AVAILABLE_LOCATIONS,
     };
   }
 }

@@ -12,6 +12,7 @@ interface JobsSearchParams {
   platform?: string;
   field?: string;
   seniority?: string;
+  location?: string;
   page?: number;
   q?: string;
 }
@@ -22,6 +23,7 @@ export const Route = createFileRoute("/jobs")({
       platform: (search.platform as string) || "helloworld",
       field: (search.field as string) || undefined,
       seniority: (search.seniority as string) || undefined,
+      location: (search.location as string) || undefined,
       page: search.page ? Number(search.page) : 1,
       q: (search.q as string) || undefined,
     };
@@ -31,7 +33,7 @@ export const Route = createFileRoute("/jobs")({
 
 function JobsPage() {
   const navigate = useNavigate();
-  const { platform, field, seniority, page, q } = Route.useSearch();
+  const { platform, field, seniority, location, page, q } = Route.useSearch();
   const [jobs, setJobs] = useState<Job[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -42,6 +44,7 @@ function JobsPage() {
     platform: string;
     field: string;
     seniority: string;
+    location: string;
   }) => {
     // Reset to page 1 when filters change
     const searchParams: Record<string, string | number> = {
@@ -51,6 +54,8 @@ function JobsPage() {
       searchParams.field = filters.field;
     if (filters.seniority && filters.seniority !== "all")
       searchParams.seniority = filters.seniority;
+    if (filters.location && filters.location !== "all")
+      searchParams.location = filters.location;
     if (filters.query) searchParams.q = filters.query;
 
     navigate({
@@ -65,6 +70,7 @@ function JobsPage() {
     };
     if (field) searchParams.field = field;
     if (seniority) searchParams.seniority = seniority;
+    if (location) searchParams.location = location;
     if (q) searchParams.q = q;
     if (newPage > 1) searchParams.page = newPage;
 
@@ -86,6 +92,7 @@ function JobsPage() {
           q: q,
           field: field,
           seniority: seniority,
+          location: location,
           page: currentPage,
         };
         const results = await fetchJobs(params);
@@ -99,7 +106,7 @@ function JobsPage() {
     };
 
     loadJobs();
-  }, [platform, q, field, seniority, currentPage]);
+  }, [platform, q, field, seniority, location, currentPage]);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-background via-background to-secondary/20">
@@ -110,6 +117,7 @@ function JobsPage() {
             initialPlatform={platform}
             initialField={field}
             initialSeniority={seniority}
+            initialLocation={location}
             initialQuery={q}
             onSearch={handleSearch}
           />

@@ -7,4 +7,5 @@ export class FiltersResponseDto {
   platforms: FilterOptionDto[];
   fields: FilterOptionDto[];
   seniorities: FilterOptionDto[];
+  locations: FilterOptionDto[];
 }

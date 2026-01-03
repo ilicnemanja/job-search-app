@@ -10,6 +10,7 @@ import { extractHelloWorldJob } from '../../scraping/helloworld';
 export interface JobQuery {
   seniority?: string;
   field?: string;
+  location?: string; // Location filter (e.g., 'beograd', 'novi-sad')
   q?: string; // Keyword search
   page?: number; // Page number (1-based) for pagination
   allPages?: boolean; // When true, fetches all pages
@@ -40,6 +41,11 @@ const SENIORITY_MAP: Record<string, string> = {
   senior: '3',
 };
 
+const LOCATION_MAP: Record<string, string> = {
+  beograd: 'beograd',
+  'novi-sad': 'novi-sad',
+};
+
 // Available filters - exported for use in JobsService
 export const AVAILABLE_FIELDS = [
   { value: 'software-engineering', label: 'Software Engineering' },
@@ -50,6 +56,11 @@ export const AVAILABLE_SENIORITIES = [
   { value: 'junior', label: 'Junior' },
   { value: 'medior', label: 'Medior' },
   { value: 'senior', label: 'Senior' },
+];
+
+export const AVAILABLE_LOCATIONS = [
+  { value: 'beograd', label: 'Beograd' },
+  { value: 'novi-sad', label: 'Novi Sad' },
 ];
 
 const SELECTORS = {
@@ -89,9 +100,22 @@ export class HelloworldService {
 
   private buildUrl(query: JobQuery, pageOffset?: number): string {
     const fieldPath = FIELD_MAP[query.field?.toLowerCase() ?? ''] ?? '';
+    const locationPath =
+      LOCATION_MAP[query.location?.toLowerCase() ?? ''] ?? '';
     const seniorityParams = this.buildSeniorityParams(query.seniority);
 
-    let url = `${BASE_URL}${fieldPath}`;
+    // Build URL: /oglasi-za-posao/{field}/{location}
+    let url = BASE_URL;
+    if (fieldPath) {
+      url += fieldPath;
+      if (locationPath) {
+        url += `/${locationPath}`;
+      }
+    } else if (locationPath) {
+      // If no field but location is specified, we need to include it differently
+      url += locationPath;
+    }
+
     const params: string[] = [...seniorityParams];
 
     if (pageOffset !== undefined && pageOffset > 0) {

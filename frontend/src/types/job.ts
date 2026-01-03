@@ -13,6 +13,7 @@ export interface JobSearchParams {
   q?: string;
   field?: string;
   seniority?: string;
+  location?: string;
   page?: number;
 }
 
@@ -25,4 +26,5 @@ export interface FiltersResponse {
   platforms: FilterOption[];
   fields: FilterOption[];
   seniorities: FilterOption[];
+  locations: FilterOption[];
 }

@@ -18,6 +18,9 @@ export async function fetchJobs(params?: JobSearchParams): Promise<Job[]> {
   if (params?.seniority && params.seniority !== "all") {
     searchParams.set("seniority", params.seniority);
   }
+  if (params?.location && params.location !== "all") {
+    searchParams.set("location", params.location);
+  }
   if (params?.page && params.page > 1) {
     searchParams.set("page", params.page.toString());
   }
