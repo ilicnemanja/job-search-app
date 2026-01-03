@@ -10,7 +10,15 @@ import {
  * Puppeteer Page Adapter - Wraps puppeteer.Page to implement IAutomationPage
  */
 class PuppeteerPageAdapter implements IAutomationPage {
-  constructor(private readonly page: puppeteer.Page) {}
+  public keyboard: { press: (key: string) => Promise<void> };
+
+  constructor(private readonly page: puppeteer.Page) {
+    this.keyboard = {
+      press: async (key: string) => {
+        await this.page.keyboard.press(key as puppeteer.KeyInput);
+      },
+    };
+  }
 
   async goto(
     url: string,
@@ -26,8 +34,18 @@ class PuppeteerPageAdapter implements IAutomationPage {
     await this.page.waitForSelector(selector, options);
   }
 
+  async waitForNavigation(options?: {
+    waitUntil?: WaitUntilOption;
+  }): Promise<void> {
+    await this.page.waitForNavigation({ waitUntil: options?.waitUntil });
+  }
+
   async click(selector: string): Promise<void> {
     await this.page.click(selector);
+  }
+
+  async type(selector: string, text: string): Promise<void> {
+    await this.page.type(selector, text);
   }
 
   async evaluate<T>(

@@ -21,7 +21,12 @@ export interface IAutomationPage {
     selector: string,
     options?: { timeout?: number },
   ): Promise<void>;
+  waitForNavigation(options?: { waitUntil?: WaitUntilOption }): Promise<void>;
   click(selector: string): Promise<void>;
+  type(selector: string, text: string): Promise<void>;
+  keyboard: {
+    press(key: string): Promise<void>;
+  };
   evaluate<T>(
     fn: string | ((...args: unknown[]) => T),
     ...args: unknown[]

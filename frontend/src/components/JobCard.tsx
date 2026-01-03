@@ -1,6 +1,5 @@
 import { Building2, MapPin, Clock, ExternalLink } from "lucide-react";
 import type { Job } from "@/types/job";
-import { cn } from "@/lib/utils";
 
 interface JobCardProps {
   job: Job;
@@ -8,20 +7,7 @@ interface JobCardProps {
 
 export function JobCard({ job }: JobCardProps) {
   return (
-    <div
-      className={cn(
-        "group relative p-6 rounded-xl bg-card/50 border border-border/50 hover:border-primary/50 transition-all duration-300 hover:shadow-lg hover:shadow-primary/5",
-        job.inactive && "opacity-60"
-      )}
-    >
-      {job.inactive && (
-        <div className="absolute top-3 right-3">
-          <span className="px-2 py-1 text-xs font-medium bg-destructive/10 text-destructive rounded-full">
-            Inactive
-          </span>
-        </div>
-      )}
-
+    <div className="group relative p-6 rounded-xl bg-card/50 border border-border/50 hover:border-primary/50 transition-all duration-300 hover:shadow-lg hover:shadow-primary/5">
       <div className="flex gap-4">
         {/* Company Logo */}
         <div className="flex-shrink-0">

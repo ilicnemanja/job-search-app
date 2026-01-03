@@ -28,6 +28,11 @@ export const Route = createRootRoute({
     ],
     links: [
       {
+        rel: "icon",
+        type: "image/svg+xml",
+        href: "/job-search.svg",
+      },
+      {
         rel: "stylesheet",
         href: appCss,
       },

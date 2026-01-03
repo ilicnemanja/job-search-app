@@ -9,7 +9,6 @@ export class JobResponseDto {
   link: string;
   tags: string[];
   companyLogo: string;
-  inactive: boolean;
 }
 
 /**

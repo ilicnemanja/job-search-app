@@ -4,6 +4,7 @@ export class FilterOptionDto {
 }
 
 export class FiltersResponseDto {
+  platforms: FilterOptionDto[];
   fields: FilterOptionDto[];
   seniorities: FilterOptionDto[];
 }

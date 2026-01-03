@@ -6,11 +6,20 @@ const API_BASE_URL =
 export async function fetchJobs(params?: JobSearchParams): Promise<Job[]> {
   const searchParams = new URLSearchParams();
 
+  if (params?.platform && params.platform !== "all") {
+    searchParams.set("platform", params.platform);
+  }
+  if (params?.q) {
+    searchParams.set("q", params.q);
+  }
   if (params?.field && params.field !== "all") {
     searchParams.set("field", params.field);
   }
   if (params?.seniority && params.seniority !== "all") {
     searchParams.set("seniority", params.seniority);
+  }
+  if (params?.page && params.page > 1) {
+    searchParams.set("page", params.page.toString());
   }
 
   const queryString = searchParams.toString();

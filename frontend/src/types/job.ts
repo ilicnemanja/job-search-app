@@ -6,12 +6,14 @@ export interface Job {
   link: string;
   tags: string[];
   companyLogo: string;
-  inactive: boolean;
 }
 
 export interface JobSearchParams {
+  platform?: string;
+  q?: string;
   field?: string;
   seniority?: string;
+  page?: number;
 }
 
 export interface FilterOption {
@@ -20,6 +22,7 @@ export interface FilterOption {
 }
 
 export interface FiltersResponse {
+  platforms: FilterOption[];
   fields: FilterOption[];
   seniorities: FilterOption[];
 }

@@ -10,7 +10,6 @@ export interface ExtractedJob {
   link: string;
   tags: string[];
   companyLogo: string;
-  inactive: boolean;
 }
 
 /**
@@ -35,16 +34,6 @@ export function extractHelloWorldJob(card: Element): ExtractedJob {
     return el?.textContent?.trim() || '';
   };
 
-  // Helper: Check if card is inactive
-  const isInactive = (): boolean => {
-    const classList = card.className;
-    return (
-      classList.includes('bg-transparent') &&
-      classList.includes('shadow-none') &&
-      classList.includes('border-gray-600')
-    );
-  };
-
   // Helper: Extract tags
   const extractTags = (): string[] =>
     Array.from(card.querySelectorAll('a.jobtag'))
@@ -66,6 +55,5 @@ export function extractHelloWorldJob(card: Element): ExtractedJob {
     link: buildUrl(linkHref),
     tags: extractTags(),
     companyLogo: buildUrl(logoSrc),
-    inactive: isInactive(),
   };
 }
